@@ -1,0 +1,39 @@
+export(semPaths,semPlotModel,semCors,lisrelModel,semSyntax)
+
+# export Classes
+exportClasses(
+              "semPlotModel"
+             )
+
+# export Methods
+exportMethods(
+             "semPlotModel.S4"
+           )
+
+S3method("+",semPlotModel)
+S3method(semPlotModel,list)
+S3method(semPlotModel,lm)
+S3method(semPlotModel,principal)
+S3method(semPlotModel,princomp)
+S3method(semPlotModel,loadings)
+S3method(semPlotModel,lisrel)
+S3method(semPlotModel,factanal)
+S3method(semPlotModel,default)
+# S3method(semPlotModel,semspec)
+S3method(semPlotModel,mplus.model)
+S3method(semPlotModel,sem)
+S3method(semPlotModel,msem)
+S3method(semPlotModel,msemObjectiveML)
+importFrom(MplusAutomation,"readModels")
+importFrom(sem,"sem","standardizedCoefficients","specifyModel")
+importFrom(lavaan,"lavaan","cfa","standardizedSolution", "standardizedsolution", "parameterEstimates", "parameterestimates","inspect","lavaanNames")
+importClassesFrom(lavaan,"lavaan")
+importFrom(stats,"factanal")
+importFrom(rockchalk,standardize)
+import(plyr)
+import(lisrelToR)
+import(XML)
+export(semPlotModel_Onyx)
+export(semPlotModel_Amos)
+importFrom(igraph,"layout.reingold.tilford","graph.edgelist")
+export(exo,"exo<-",endo,"endo<-",lat,"lat<-",man,"man<-")
