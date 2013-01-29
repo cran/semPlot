@@ -17,7 +17,9 @@ semPaths(object, what = "paths", whatLabels, style, layout = "tree",
         residScale, gui = FALSE, allVars = FALSE, edge.color, 
         reorder = TRUE, structural = FALSE, ThreshAtSide = FALSE, 
         threshold.color, fixedStyle = 2, freeStyle = 1, 
-        as.expression, optimizeLatRes = FALSE, mixCols = TRUE, ...)
+        as.expression, optimizeLatRes = FALSE, mixCols = TRUE, 
+        curvePivot, ...)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -177,6 +179,9 @@ Logical. If this is TRUE, the angle of the incoming residuals on latent variable
 }
   \item{mixCols}{
 Logical, should uncolored nodes obtain a mix of connected colored nodes? Defaults to \code{TRUE}.
+}
+\item{curvePivot}{
+  Same as the \code{curvePivot} argument in \code{\link[qgraph]{qgraph}}. Defaults to \code{TRUE} in tree layouts and FALSE otherwise.
 }
   \item{\dots}{
   Arguments sent to the \code{\link[qgraph]{qgraph}} function.
