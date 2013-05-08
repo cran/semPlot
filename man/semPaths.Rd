@@ -9,17 +9,19 @@ This function creates a path diagram of a SEM model (or general linear model), w
 }
 \usage{
 semPaths(object, what = "paths", whatLabels, style, layout = "tree", 
-        intercepts = TRUE, residuals = TRUE, thresholds = TRUE, 
-        intStyle = "multi", rotation = 1, curve, nCharNodes = 3, 
-        nCharEdges = 3, sizeMan = 5, sizeLat = 8, sizeInt = 2, ask, 
-        mar, title, title.color = "black", include, 
-        combineGroups = FALSE, manifests, latents, groups, color, 
-        residScale, gui = FALSE, allVars = FALSE, edge.color, 
-        reorder = TRUE, structural = FALSE, ThreshAtSide = FALSE, 
-        threshold.color, fixedStyle = 2, freeStyle = 1, 
-        as.expression, optimizeLatRes = FALSE, mixCols = TRUE, 
-        curvePivot, ...)
-
+  intercepts = TRUE, residuals = TRUE, thresholds = TRUE, intStyle = "multi", 
+  rotation = 1, curve, nCharNodes = 3, nCharEdges = 3, sizeMan = 5, sizeLat = 8, 
+  sizeInt = 2, sizeMan2, sizeLat2, sizeInt2, shapeMan, shapeLat, 
+  shapeInt = "triangle", ask, mar, title, title.color = "black", title.adj = 0.1, 
+  title.line = -1, title.cex = 0.8, include, combineGroups = FALSE, manifests, 
+  latents, groups, color, residScale, gui = FALSE, allVars = FALSE, edge.color, 
+  reorder = TRUE, structural = FALSE, ThreshAtSide = FALSE, thresholdColor, 
+  thresholdSize = 0.5, fixedStyle = 2, freeStyle = 1, 
+  as.expression = character(0), optimizeLatRes = FALSE, mixCols = TRUE, curvePivot, 
+  levels, nodeLabels, edgeLabels, pastel = FALSE, rainbowStart = 0, intAtSide, 
+  springLevels = FALSE, nDigits = 2, exoVar, exoCov = TRUE, centerLevels = TRUE, 
+  panelGroups = FALSE, layoutSplit = FALSE, measurementLayout = "tree", subScale, 
+  subScale2, subRes = 4, subLinks, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -42,7 +44,7 @@ What should the edges indicate in the path diagram? This function uses \code{\li
     \item{whatLabels}{
 What should the edge labels indicate in the path diagram? This function uses \code{\link{grepl}} to allow fuzzy matching and is not case sensitive. E.g., \code{par} will also match \code{Parameters}. Default depends on the \code{what} argument, defaulting to the respective elements in the list below for values of \code{what} in the list above.
   \describe{
-    \item{\code{path}, \code{diagram}, \code{model}, \code{name} or \code{label}}{This will display the edge names as labels.} 
+    \item{\code{name}, \code{label}, \code{path} or \code{diagram}}{This will display the edge names as labels.} 
     \item{\code{est} or \code{par}}{This will display the parameter estimate in edge labels.}
     \item{\code{stand} or \code{std}}{This will display the standardized parameter estimate in edge labels.}
         \item{\code{eq} or \code{cons}}{This will display the parameter number in edge labels. 0 indicates the parameter is fixed, parameters with the same parameter number are constrained to be equal.}
@@ -52,7 +54,7 @@ What should the edge labels indicate in the path diagram? This function uses \co
   
 
   \item{style}{
-The style to use. Currently only indicates what the (residual) variances look like. Use \code{"mx"} or \code{"OpenMx"} for double headed selfloops and \code{"lisrel"} for single headed edges with no node as origin.
+The style to use. Currently only indicates what the (residual) variances look like. Use \code{"ram"}, \code{"mx"} or \code{"OpenMx"} for double headed selfloops and \code{"lisrel"} for single headed edges with no node as origin. Defaults to \code{"ram"} unless the input is a lisrel model.
 }
 
   \item{layout}{
@@ -94,13 +96,31 @@ A string indicating how the nodes should be placed. Similar to the 'layout' argu
  Number of characters to abbreviate edge labels to (using \code{\link[base]{abbreviate}}). Set to 0 to omit abbreviation.
 }
   \item{sizeMan}{
-  Size of the manifest nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
+  Width of the manifest nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
 }
   \item{sizeLat}{
-  Size of the latent nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
+  Width of the latent nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
 }
   \item{sizeInt}{
-  Size of the unit vector nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
+  Width of the unit vector nodes, sent to the 'vsize' argument in \code{\link[qgraph]{qgraph}}.
+}
+  \item{sizeMan2}{
+  Height of the manifest nodes, sent to the 'vsize2' argument in \code{\link[qgraph]{qgraph}}.
+}
+  \item{sizeLat2}{
+  Height of the latent nodes, sent to the 'vsize2' argument in \code{\link[qgraph]{qgraph}}.
+}
+  \item{sizeInt2}{
+  Height of the unit vector nodes, sent to the 'vsize2' argument in \code{\link[qgraph]{qgraph}}.
+}
+  \item{shapeMan}{
+  Shape of the manifest nodes, sent to the 'shape' argument in \code{\link[qgraph]{qgraph}}. Defaults to \code{"square"} or \code{"rectangle"} if width and height differ.
+}
+  \item{shapeLat}{
+  Shape of the latent nodes, sent to the 'shape' argument in \code{\link[qgraph]{qgraph}}. Defaults to \code{"circle"} or \code{"ellipse"} if width and height differ.
+}
+  \item{shapeInt}{
+  Shape of the constant nodes, sent to the 'shape' argument in \code{\link[qgraph]{qgraph}}. Defaults to \code{"triangle"}.
 }
   \item{ask}{
 Specifies the 'ask' parameter in \code{\link[graphics]{par}}. Defaults to TRUE if multiple groups are in the model.
@@ -113,6 +133,15 @@ Logical, should titles be plotted of the group names above each plot?
 }
   \item{title.color}{
 Color of the titles.
+}
+  \item{title.adj}{
+Adjustment of title as used by \code{'adj'} in \code{par}.
+}
+  \item{title.line}{
+Line of title as used by \code{'line'} in \code{title}.
+}
+  \item{title.cex}{
+Size of title as used by \code{'cex.main'} in \code{par}.
 }
   \item{include}{
 Integer vector indicating which groups should be included in the output. e.g., to only plot a diagram for the first group use \code{include = 1}.
@@ -152,7 +181,7 @@ Logical. If TRUE all variables are plotted in the path diagrams for each group. 
 A value indicating the color of all edges or a vector indicating the color of each edge. Useful for manually overwriting edge colors. 
 }
   \item{reorder}{
-Logical. Should manifest variables be reordered to be near latent factors they are most connected to in the "tree" layout? If FALSE manifest variables are placed in the order they appear in the RAM.
+Logical. Should manifest variables be reordered to be near latent factors they are most connected to in the "tree" layout? If FALSE manifest variables are placed in the order they appear in the Pars.
 }
   \item{structural}{
 Logical. Set this to FALSE to only show the structural model (omit all manifest variables.)
@@ -160,9 +189,14 @@ Logical. Set this to FALSE to only show the structural model (omit all manifest 
   \item{ThreshAtSide}{
  Logical. If TRUE, thresholds are plotted as small lines at the side of manifest nodes, otherwise they are plotted as lines inside the nodes.
 }
-  \item{threshold.color}{
+  \item{thresholdColor}{
 Color of the threshold lines. Defaults to "black"
 }
+
+  \item{thresholdSize}{
+Size of threshold bars relative to the size of the node. 
+}
+
   \item{fixedStyle}{
 A vector of length one or two specifying the color and line type (same as 'lty' in \code{\link[graphics]{par}}) of fixed parameters. Can be both character and numeric. If one of the elements encodes a color it is used to overwrite the color of fixed edges, and if an element can be coerced to a numeric it is used to encode the line type.
 
@@ -172,7 +206,7 @@ For example, \code{ fixedStyle = c("red",3)} specifies that all fixed parameters
 Same as 'fixedStyle' but for free parameters instead.
 }
   \item{as.expression}{
-A character vector indicating which labels should be treated as an \code{\link[base]{expression}}, so that mathematical notation and Greek letters can be used in the path diagram. If this vector contains \code{"nodes"} all node labels are converted to expressions, and if this vector contains \code{"edges"} all node labels are converted to expressions.
+A character vector indicating which labels should be treated as an \code{\link[base]{expression}}, so that mathematical notation and Greek letters can be used in the path diagram. If this vector contains \code{"nodes"} all node labels are converted to expressions, and if this vector contains \code{"edges"} all node labels are converted to expressions. Defaults to \code{"edges"} only if the input is a Lisrel model.
 }
   \item{optimizeLatRes}{
 Logical. If this is TRUE, the angle of the incoming residuals on latent variables is attempted to be optimally chosen so its position conflicts with the least amount of connected edges.
@@ -183,6 +217,56 @@ Logical, should uncolored nodes obtain a mix of connected colored nodes? Default
 \item{curvePivot}{
   Same as the \code{curvePivot} argument in \code{\link[qgraph]{qgraph}}. Defaults to \code{TRUE} in tree layouts and FALSE otherwise.
 }
+\item{levels}{A numeric vector usually of length 4. Controls the relative vertical position of variable levels (exogenous and endogenous latents and manifests) under default rotation in tree and circle layouts. This can be used to control the spacing between these levels. e.g., \code{c(1,5,6,7)} will create more space between endogenous manifests and latents.}
+
+\item{nodeLabels}{A vector or list to manually overwrite the node labels. Can include expressions.}
+
+\item{edgeLabels}{A vector or list to manually overwrite the edge labels. Can include expressions.}
+
+\item{pastel}{Logical, should default colors (for groups or edge equality constraints) be chosen from pastel colors? If TRUE then \code{\link[colorspace]{rainbow_hcl}} is used.}
+
+\item{rainbowStart}{A number between 0 and 1 indicating the offset used in rainbow functions for default node coloring.}
+  \item{exoVar}{
+Should variances of truely exogenous variables (no incomming directed edge) be plotted? Defaults to \code{TRUE} unless \code{style = "lisrel"}.
+}
+  \item{intAtSide}{
+Logical to control if intercepts should be plotted to the side of manifest nodes or at the bottom/top. Defaults only to FALSE if 'residuals=FALSE'.
+}
+  \item{springLevels}{
+Logical indicating if the placement on horizontal levels with \code{tree3} layout should be determined by a force embedded algorithm.
+}
+  \item{nDigits}{
+Number of digits to round numeric values to.
+}
+
+  \item{exoCov}{
+Should covariances between truely exogenous variables (no incomming directed edge) be plotted? Defaults to \code{TRUE}.
+}
+ \item{centerLevels}{
+Only used if \code{layout} is set to \code{"tree2"}, should each level be centered? Defaults to \code{TRUE}
+}
+  \item{panelGroups}{
+Logical to automatically create a panel plot of multiple group models. Defaults to FALSE.
+}
+  \item{layoutSplit}{
+Logical that can be used to split computing of layout between structural and measurment models. This is very useful in more complicated models where the structural part is best shown by using a spring layout.
+}
+  \item{measurementLayout}{
+Logical indicating the layout algorithm to use for measurement models if \code{layoutSplit = TRUE} (the structural model will obtain a layout given by the \code{layout} argument).
+}
+  \item{subScale}{
+Width of submodels (measurment models) if \code{layoutSplit = TRUE}.
+}
+  \item{subScale2}{
+Height of submodels (measurment models) if \code{layoutSplit = TRUE}.
+}
+  \item{subRes}{
+Integer indicating the resolution of which measurment models can be rotated around their corresponding latent variable. The default, 4, indicates that they can be placed only to polar coordinates. Set to 360 to allow every angle of rotation.
+}
+  \item{subLinks}{
+Vector of variables to link to. Currently not well supported so avoid using this argument.
+}
+
   \item{\dots}{
   Arguments sent to the \code{\link[qgraph]{qgraph}} function.
 }
@@ -248,10 +332,10 @@ DF <- data.frame(X,Y,Z)
 res <- lm(Z ~ X*Y, data = DF)
 
 # Path diagram:
-semPaths(res)
+semPaths(res, intAtSide=TRUE)
 
 # Standardized estimates:
-semPaths(res,"std","hide")
+semPaths(res,"std","hide", intAtSide=TRUE)
 
 
 
@@ -277,14 +361,19 @@ fit <- lavaan:::cfa(model.Lavaan, data=Data, std.lv=TRUE)
 # Plot path diagram:
 semPaths(fit,title=FALSE, curvePivot = TRUE)
 
+# Omit exogenous covariances:
+semPaths(fit,title=FALSE, curvePivot = TRUE, exoVar = FALSE, exoCov = FALSE)
+
 # Standardized parameters:
-semPaths(fit,"std",edge.label.cex=0.5, curvePivot = TRUE)
+semPaths(fit,"std",edge.label.cex=0.5, curvePivot = TRUE, exoVar = FALSE, 
+  exoCov = FALSE)
 
 
 ## Mplus
 
 # Same model, now using mplus output:
-download.file("http://www.statmodel.com/usersguide/chap5/ex5.8.out",outfile <- tempfile(fileext=".out"))
+outfile <- tempfile(fileext=".out")
+download.file("http://www.statmodel.com/usersguide/chap5/ex5.8.out",outfile)
 
 # Plot model:
 semPaths(outfile,intercepts=FALSE)
@@ -314,7 +403,8 @@ semPaths(fit,intercepts=FALSE)
 ## Mplus
 
 # Same model, now using mplus output:
-download.file("http://www.statmodel.com/usersguide/chap5/ex5.2.out",outfile <- tempfile(fileext=".out"))
+outfile <- tempfile(fileext=".out")
+download.file("http://www.statmodel.com/usersguide/chap5/ex5.2.out",outfile)
 
 # Plot model:
 semPaths(outfile)
@@ -361,9 +451,10 @@ semPaths(twoFactorFit, layout = "tree2")
 # Multi-group analysis -------------------------------------------
 ## LISREL:
 # Download measurment invariance example:
-download.file("http://sachaepskamp.com/files/mi1.OUT",modFile <- tempfile(fileext=".OUT"))
+modFile <- tempfile(fileext=".OUT")
+download.file("http://sachaepskamp.com/files/mi1.OUT",modFile)
 layout(t(1:2))
-semPaths(modFile,"eq",ask=FALSE,as.expression = "edges",mar=c(3,1,5,1))
+semPaths(modFile,"eq",ask=FALSE, intAtSide = TRUE, mar = c(8, 1, 5, 1))
 # Color indicates equality constraints.
 }
 }
