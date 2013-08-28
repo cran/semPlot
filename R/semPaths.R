@@ -182,7 +182,7 @@ semPaths <- function(object,what="paths",whatLabels,style,layout="tree",intercep
                      as.expression=character(0),optimizeLatRes=FALSE,mixCols=TRUE,curvePivot,levels,nodeLabels,edgeLabels,
                      pastel=FALSE,rainbowStart=0,intAtSide,springLevels=FALSE,nDigits=2,exoVar,exoCov=TRUE,centerLevels=TRUE,
                      panelGroups=FALSE,layoutSplit = FALSE, measurementLayout = "tree", subScale, subScale2, subRes = 4, 
-                     subLinks, ...){
+                     subLinks, modelOpts = list(), ...){
   
   # Check if input is combination of models:
   call <- paste(deparse(substitute(object)), collapse = "")
@@ -194,7 +194,7 @@ semPaths <- function(object,what="paths",whatLabels,style,layout="tree",intercep
     for (i in 2:length(obs)) object <- object + obs[[i]]
   }
   
-  if (!"semPlotModel"%in%class(object)) object <- semPlotModel(object)
+  if (!"semPlotModel"%in%class(object)) object <- do.call(semPlotModel,c(list(object),modelOpts))
   stopifnot("semPlotModel"%in%class(object))
   
   # if (gui) return(do.call(semPathsGUI,as.list(match.call())[-1]))
@@ -1199,11 +1199,11 @@ semPaths <- function(object,what="paths",whatLabels,style,layout="tree",intercep
     } else if (grepl("stand|std",what,ignore.case=TRUE))
     {
       Edgelist <- cbind(Edgelist,GroupPars$std)
-      if (edge.labels) eLabels <- as.character(round(GroupPars$std,2))
+      if (edge.labels) eLabels <- GroupPars$std
     } else if (grepl("est|par",what,ignore.case=TRUE))
     {
       Edgelist <- cbind(Edgelist,GroupPars$est)
-      if (edge.labels) eLabels <- as.character(round(GroupPars$est,2))
+      if (edge.labels) eLabels <- GroupPars$est
     } else if (grepl("eq|cons",what,ignore.case=TRUE))
     {
       #       eColor <- rep(rgb(0.5,0.5,0.5),nrow(Edgelist))
@@ -1486,13 +1486,13 @@ semPaths <- function(object,what="paths",whatLabels,style,layout="tree",intercep
     # fixedStyle
     if (any(is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle))) lty <- ifelse(GroupPars$fixed,as.numeric(fixedStyle[is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle)]),lty) 
     
-    if (any(qgraph:::isColor(fixedStyle) & !(is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle)))) eColor[GroupPars$fixed] <- fixedStyle[qgraph:::isColor(fixedStyle) & !(is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle))]
+    if (any(isColor(fixedStyle) & !(is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle)))) eColor[GroupPars$fixed] <- fixedStyle[isColor(fixedStyle) & !(is.numeric(fixedStyle) | grepl("^\\d+$",fixedStyle))]
     
     
     # freeStyle:
     if (any(is.numeric(freeStyle) | grepl("\\d+",freeStyle))) lty <- ifelse(GroupPars$fixed,lty,as.numeric(freeStyle[is.numeric(freeStyle) | grepl("\\d+",freeStyle)]))
     
-    if (any(qgraph:::isColor(freeStyle) & !(is.numeric(freeStyle) | grepl("\\d+",freeStyle)))) eColor[!GroupPars$fixed] <- freeStyle[qgraph:::isColor(freeStyle) & !(is.numeric(freeStyle) | grepl("\\d+",freeStyle))]
+    if (any(isColor(freeStyle) & !(is.numeric(freeStyle) | grepl("\\d+",freeStyle)))) eColor[!GroupPars$fixed] <- freeStyle[isColor(freeStyle) & !(is.numeric(freeStyle) | grepl("\\d+",freeStyle))]
     
     # Directed settings:
     

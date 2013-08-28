@@ -21,7 +21,7 @@ semPaths(object, what = "paths", whatLabels, style, layout = "tree",
   levels, nodeLabels, edgeLabels, pastel = FALSE, rainbowStart = 0, intAtSide, 
   springLevels = FALSE, nDigits = 2, exoVar, exoCov = TRUE, centerLevels = TRUE, 
   panelGroups = FALSE, layoutSplit = FALSE, measurementLayout = "tree", subScale, 
-  subScale2, subRes = 4, subLinks, ...)
+  subScale2, subRes = 4, subLinks, modelOpts = list(), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -267,6 +267,10 @@ Integer indicating the resolution of which measurment models can be rotated arou
 Vector of variables to link to. Currently not well supported so avoid using this argument.
 }
 
+  \item{modelOpts}{
+A lists containing arguments sent to \code{\link{semPlotModel}} in case the input is not of class \code{semPlotModel}.
+}
+
   \item{\dots}{
   Arguments sent to the \code{\link[qgraph]{qgraph}} function.
 }
@@ -341,7 +345,7 @@ semPaths(res,"std","hide", intAtSide=TRUE)
 
 # MIMIC model ----------------------------------------------------
 ## Lavaan
-
+\dontrun{
 library("lavaan")
 
 # Example 5.8 from mplus user guide:
@@ -368,7 +372,7 @@ semPaths(fit,title=FALSE, curvePivot = TRUE, exoVar = FALSE, exoCov = FALSE)
 semPaths(fit,"std",edge.label.cex=0.5, curvePivot = TRUE, exoVar = FALSE, 
   exoCov = FALSE)
 
-
+}
 ## Mplus
 
 # Same model, now using mplus output:
@@ -383,6 +387,7 @@ semPaths(outfile,intercepts=FALSE)
 
 
 # Thresholds  -----------------------------------------------------
+\dontrun{
 ## Lavaan
 
 # Example 5.8 from mplus user guide:
@@ -398,7 +403,7 @@ fit <- lavaan::cfa(model, data=Data)
 
 # Plot path diagram:
 semPaths(fit,intercepts=FALSE)
-
+}
 
 ## Mplus
 
