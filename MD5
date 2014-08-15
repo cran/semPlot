@@ -1,7 +1,7 @@
 ff547ababc85108875b8e8f94239d4dd *COPYING
-016a40d1993ecedd1a04b3d30fa8393f *DESCRIPTION
+022eda5649b29aad1fa9400045b635c0 *DESCRIPTION
 64b71bddb52edde814d0eb49688bf9c3 *NAMESPACE
-6362bc72bc130d5e345f0b8de32d5a8a *NEWS
+c25763eb3e11cd1b86c73e71258bf780 *NEWS
 05fa6482b65f40438d5185fc274395a3 *R/00classes.R
 579e8b2641f3e8a5178eba4a297314f1 *R/Imin.R
 8c3648e41405f1aa7f68faffe5ba2efa *R/IntInNode.r
@@ -11,7 +11,7 @@ b92da836d47ecc0b7f2b48815e406c19 *R/amos.R
 89ff726b3c2aa9772615acc067622404 *R/defExo.R
 a148129fc1a655b4f125a49358697e7b *R/editFuns.R
 8f3707a6268747000876753d89cc25d9 *R/factanal.R
-51a135cdadbb9eb65e0b94f5e1d22d28 *R/glm.R
+f5fb2ffd916521a1f63d47490c7a03c7 *R/glm.R
 5475c928a8b21487dfb7208eba80a749 *R/greplVarType.R
 f21b6d9493451ecdbe3b98974bc33bab *R/isColor.R
 60e762333c06e8476bd27532c966a69b *R/lavaan.R
@@ -47,7 +47,7 @@ be9227da2ee17e68b646df700c4ce800 *man/modelMatrices.Rd
 ee8008d40ba3d4c6391a4d44c8c95c56 *man/ramModel.Rd
 5c6f88a5afd453c7a93137e70ecb8732 *man/semCors.Rd
 512a8e0140b61ad7ff8bf3bca8038d8e *man/semMatrixAlgebra.Rd
-ab5a43508a266ce91777fa87e016a301 *man/semPaths.Rd
+8ecdec29080cab1b52a794942c067ed9 *man/semPaths.Rd
 7fcdabc526259cdaa114ff3b2fb9f6aa *man/semPlot-package.Rd
 e5996043cd0f0d7f8bc03b8dd621c366 *man/semPlotModel-class.Rd
 15cfec3804b43f70e193eb51ad792059 *man/semPlotModel.Rd
