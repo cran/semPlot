@@ -12,66 +12,71 @@
           
 ### SINGLE GROUP ###
 semPlotModel_MxRAMModel <- function(object){
-  
+
   # Extract names:
   varNames <- object@manifestVars
   factNames <- object@latentVars
   
+  # Standardized object:
+  std <- OpenMx::mxStandardizeRAMpaths(object, SE = TRUE)
+  
   # Extract directed paths:
-  Dirpaths <- which(t(object@matrices$A@free | object@matrices$A@values!=0),arr.ind=TRUE)
-  DirpathsFixed <- !t(object@matrices$A@free)[Dirpaths]
-  DirpathsValues <- t(object@matrices$A@values)[Dirpaths]
-  DirpathsLabels <- t(object@matrices$A@labels)[Dirpaths]
+#   Dirpaths <- which(t(object@matrices$A@free | object@matrices$A@values!=0),arr.ind=TRUE)
+#   DirpathsFixed <- !t(object@matrices$A@free)[Dirpaths]
+#   DirpathsValues <- t(object@matrices$A@values)[Dirpaths]
+#   DirpathsLabels <- t(object@matrices$A@labels)[Dirpaths]
   
   # Extract symmetric paths:
-  Sympaths <- which(t(object@matrices$S@free | object@matrices$S@values!=0) & upper.tri(object@matrices$S@values,diag=TRUE),arr.ind=TRUE)
-  SympathsFixed <- !t(object@matrices$S@free)[Sympaths]
-  SympathsValues <- t(object@matrices$S@values)[Sympaths]
-  SympathsLabels <- t(object@matrices$A@labels)[Sympaths]
+#   Sympaths <- which(t(object@matrices$S@free | object@matrices$S@values!=0) & upper.tri(object@matrices$S@values,diag=TRUE),arr.ind=TRUE)
+#   SympathsFixed <- !t(object@matrices$S@free)[Sympaths]
+#   SympathsValues <- t(object@matrices$S@values)[Sympaths]
+#   SympathsLabels <- t(object@matrices$A@labels)[Sympaths]
   
-  if (!is.null(object@matrices$M))
-  {
-    # Extract intercepts:
-    Means <- which(object@matrices$M@free | object@matrices$M@values!=0)
-    MeansFixed <- !object@matrices$M@free[Means]
-    MeansValues <- object@matrices$M@values[Means]
-    MeansLabels <- object@matrices$M@labels[Means]
-  } else
-  {
-    Means <- numeric(0)
-    MeansFixed <- logical(0)
-    MeansValues <- numeric(0)
-    MeansLabels <- character(0)
-  }
-  
-  ## Standardized
-  if (!length(object@output)==0)
-  {
-    # Function by Ryne Estabrook (http://openmx.psyc.virginia.edu/thread/718)
-    standObj <- standardizeRAM(object,"model")
-    
-    # Extract directed paths:
-    DirpathsValuesStd <- t(standObj@matrices$A@values)[Dirpaths]
-    
-      # Extract symmetric paths:
-    SympathsValuesStd <- t(standObj@matrices$S@values)[Sympaths]
-      
-      # Extract means:
-    
-    if (!is.null(standObj@matrices$M))
-    {
-      MeansValuesStd <- standObj@matrices$S@values[Means]
-    } else
-    {
-      MeansValuesStd <- numeric(0)
-    }
-  } else 
-  {
-    DirpathsValuesStd <- rep(NA,nrow(Dirpaths)) 
-    SympathsValuesStd <- rep(NA,nrow(Sympaths))
-    MeansValuesStd <- rep(NA,length(Means))
-  }
-  
+#   if (!is.null(object@matrices$M))
+#   {
+#     # Extract intercepts:
+#     Means <- which(object@matrices$M@free | object@matrices$M@values!=0)
+#     MeansFixed <- !object@matrices$M@free[Means]
+#     MeansValues <- object@matrices$M@values[Means]
+#     MeansLabels <- object@matrices$M@labels[Means]
+#   } else
+#   {
+#     Means <- numeric(0)
+#     MeansFixed <- logical(0)
+#     MeansValues <- numeric(0)
+#     MeansLabels <- character(0)
+#   }
+#   
+#   ## Standardized
+#   if (!length(object@output)==0)
+#   {
+#     # browser()
+#     # Function by Ryne Estabrook (http://openmx.psyc.virginia.edu/thread/718)
+#     
+# standObj <- standardizeRAM(object,"model")
+#     
+#     # Extract directed paths:
+#     # DirpathsValuesStd <- t(standObj@matrices$A@values)[Dirpaths]
+#     # DirpathsValuesStd <- std$Std.Value[std$matrix=="A"]
+#     
+#       # Extract symmetric paths:
+#     SympathsValuesStd <- t(standObj@matrices$S@values)[Sympaths]
+#       
+#       # Extract means:
+#     
+#if (!is.null(standObj@matrices$M))
+#    {
+#    MeansValuesStd <- standObj@matrices$S@values[Means]
+#   } else    {
+#      MeansValuesStd <- numeric(0)
+#    }
+#   } else 
+#   {
+#     DirpathsValuesStd <- rep(NA,nrow(Dirpaths)) 
+#     SympathsValuesStd <- rep(NA,nrow(Sympaths))
+#     MeansValuesStd <- rep(NA,length(Means))
+#   }
+#   
   # Vars dataframe:
   Vars <- data.frame(
     name = c(varNames,factNames),
@@ -79,18 +84,50 @@ semPlotModel_MxRAMModel <- function(object){
     exogenous = NA,
     stringsAsFactors=FALSE)
   
+  
+  
+  
+ # standObj <- semTools::standardizeMx(object,free=T)
+  
+  Edges <- std
+  
   # Define Pars:
   Pars <- data.frame(
-    label = c(DirpathsLabels,SympathsLabels,MeansLabels), 
-    lhs = c(Vars$name[c(Dirpaths[,1],Sympaths[,1])],rep("",length(Means))),
-    edge = c(rep("->",nrow(Dirpaths)),rep("<->",nrow(Sympaths)),rep("int",length(Means))),
-    rhs = Vars$name[c(Dirpaths[,2],Sympaths[,2],Means)],
-    est = c(DirpathsValues,SympathsValues,MeansValues),
-    std = c(DirpathsValuesStd,SympathsValuesStd,MeansValuesStd),
-    group = object@name,
-    fixed = c(DirpathsFixed,SympathsFixed,MeansFixed),
+    label = ifelse(is.na(Edges$label),"",Edges$label), 
+    lhs = Edges$col,
+    edge = ifelse(Edges$matrix=="A","->","<->"),
+    rhs = Edges$row,
+    est = Edges$Raw.Value,
+    std = Edges$Std.Value,
+    group = '',
+    fixed = Edges$Raw.SE==0,
     par = 0,
     stringsAsFactors=FALSE)
+  
+  
+  
+  # Maybe remove ints?
+  if (!is.null(object@matrices$M)){
+    MeanStd <- c(object@matrices$M$values)
+    names(MeanStd) <- c(object@matrices$M$labels)
+    MeanStd[!is.na(names(MeanStd))] <- semTools::standardizeMx(object,free=T)[which(names(semTools::standardizeMx(object,free=T))%in%object@matrices$M$labels)]
+    
+    MeanEst <-data.frame(
+      label = c(object@matrices$M$labels),
+      lhs = '',
+      rhs = c(colnames(object@matrices$M$values)),
+      edge = 'int',
+      est = c(object@matrices$M$values),
+      std = MeanStd,
+      group = '',
+      fixed = c(!object@matrices$M$free),
+      par = 0,
+      stringsAsFactors = FALSE )
+    Pars <- rbind(Pars,MeanEst)
+  }
+
+  
+  
   
   Pars$par[is.na(Pars$label)] <- seq_len(sum(is.na(Pars$label)))
   for (lbl in unique(Pars$label[!is.na(Pars$label)]))
@@ -135,7 +172,9 @@ semPlotModel_MxRAMModel <- function(object){
   {
     semModel@ObsCovs <- list(NULL)
   }
-  semModel@ImpCovs <- list(object@objective@info$expCov)
+  
+  
+  semModel@ImpCovs <- list(object@fitfunction@info$expCov)
   
   return(semModel)
 }
