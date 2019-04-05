@@ -9,8 +9,10 @@
 ## EXTRACT MODEL ###
 setMethod("semPlotModel_S4",signature("lavaan"),function(object){
 
+  if (class(object)=="blavaan") class(object) <- 'lavaan'
   if (class(object)!="lavaan") stop("Input must me a 'lavaan' object")
 
+  
   # Extract parameter estimates:
   pars <- parameterEstimates(object,standardized=TRUE)
   list <- inspect(object,"list")
@@ -76,11 +78,17 @@ setMethod("semPlotModel_S4",signature("lavaan"),function(object){
     exogenous = NA,
     stringsAsFactors=FALSE)
     
-  if (!is.null(object@SampleStats@res.cov[[1]])){
-    semModel@ObsCovs <- object@SampleStats@res.cov    
+  if (!is.null(object@SampleStats@res.cov) && !length(object@SampleStats@res.cov) == 0){
+      if (!is.null(object@SampleStats@res.cov[[1]])){
+        semModel@ObsCovs <- object@SampleStats@res.cov    
+      } else {
+        semModel@ObsCovs <- object@SampleStats@cov
+      }    
   } else {
-    semModel@ObsCovs <- object@SampleStats@cov
-  }
+    semModel@ObsCovs <- list(matrix(NA,
+           length(varNames),length(varNames)))
+  } 
+  
 
   names(semModel@ObsCovs) <- object@Data@group.label
   for (i in 1:length(semModel@ObsCovs))
@@ -90,6 +98,7 @@ setMethod("semPlotModel_S4",signature("lavaan"),function(object){
   
   semModel@ImpCovs <- object@Fit@Sigma.hat
   names(semModel@ImpCovs) <- object@Data@group.label
+
   for (i in 1:length(semModel@ImpCovs))
   {
     rownames(semModel@ImpCovs[[i]]) <- colnames(semModel@ImpCovs[[i]]) <- object@Data@ov.names[[i]]

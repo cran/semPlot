@@ -1,4 +1,5 @@
-export(semPaths,semPlotModel,semCors,lisrelModel,ramModel,semSyntax,semMatrixAlgebra,modelMatrices,Imin,semPlotModel_lavaanModel)
+export(semPaths,semPlotModel,semCors,lisrelModel,ramModel,semSyntax,
+       semMatrixAlgebra,modelMatrices,Imin,semPlotModel_lavaanModel)
 
 # export Classes
 exportClasses(
@@ -26,6 +27,8 @@ S3method(semPlotModel,msemObjectiveML)
 export(semPlotModel_Onyx)
 export(semPlotModel_Amos)
 export(exo,"exo<-",endo,"endo<-",lat,"lat<-",man,"man<-")
+S3method(semPlotModel,regsem)
+S3method(semPlotModel,cvregsem)
 
 # importFrom(MplusAutomation,"readModels")
 importFrom(sem,"sem","standardizedCoefficients","specifyModel")
@@ -33,6 +36,7 @@ importFrom(lavaan,"lavaan","cfa","standardizedSolution", "standardizedsolution",
 importClassesFrom(lavaan,"lavaan")
 importFrom(stats,"factanal")
 importFrom(rockchalk,standardize)
+importFrom(regsem, "regsem","cv_regsem")
 import(plyr)
 import(lisrelToR)
 import(XML)
@@ -48,3 +52,5 @@ importFrom(corpcor,"pseudoinverse")
   importFrom("stats", "ave", "coef", "cov", "cov2cor", "loadings",
              "median", "pnorm", "weighted.mean")
   importFrom("utils", "packageDescription")
+  
+  

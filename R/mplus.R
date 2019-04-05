@@ -7,7 +7,7 @@
 
 readModels <- NULL
 
-semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdxy"),...)
+semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdyx"),...)
   {
   mplusStd <- match.arg(mplusStd)
 
@@ -80,6 +80,13 @@ semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdxy"),
     }
   }
   
+  # Only find fixed if SE is present:
+  if (!is.null(parsUS$se)){
+    fixed <- parsUS$se==0
+  } else {
+    fixed <- FALSE
+  }
+  
   # Define Pars:
   Pars <- data.frame(
     label = "", 
@@ -89,14 +96,18 @@ semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdxy"),
     est = parsUS$est,
     std = NA,
     group = parsUS$Group,
-    fixed = parsUS$se==0,
+    fixed = fixed,
     par = 0,
     BetweenWithin = parsUS$BetweenWithin,
     stringsAsFactors=FALSE)
   
+  # This code will check if parameters are equal. Check on as many of these columns as possible:
+  checkCols <- c("est","se", "posterior_sd" ,"pval","lower_2.5ci","upper_2.5ci" )
+  checkCols <- checkCols[checkCols %in% names(parsUS)]
+  
   if (!noPars)
   {
-    parNums <- dlply(cbind(sapply(parsUS[c("est","se")],function(x)round(as.numeric(x),10)),data.frame(num=1:nrow(parsUS))),c("est","se"),'[[',"num")
+    parNums <- dlply(cbind(sapply(parsUS[checkCols],function(x)round(as.numeric(x),10)),data.frame(num=1:nrow(parsUS))),checkCols,'[[',"num")
     for (i in 1:length(parNums)) Pars$par[parNums[[i]]] <- i
     Pars$par[Pars$fixed] <- 0  
   } else Pars$par <- 1:nrow(Pars)
@@ -128,18 +139,22 @@ semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdxy"),
 #     Pars$std <- object$parameters$stdyx.standardized$est
 #   }
   
+                                 
   if (!is.null(object$parameters$std.standardized) && mplusStd == "std")
   {   
     Pars$std <- object$parameters$std.standardized$est
     # warning("Mplus std parameters will be plotted. To change that, use the modelOpts argument and set mplusStd to stdy, or stdyx parameters.")
-  }else if (!is.null(object$parameters$stdy.standardized) && mplusStd == "std"){
+  } else if (!is.null(object$parameters$stdy.standardized) && mplusStd == "stdy")
+  {
     Pars$std <- object$parameters$stdy.standardized$est
-  }else if (!is.null(object$parameters$stdyx.standardized)  && mplusStd == "std"){
+  } else if (!is.null(object$parameters$stdyx.standardized)  && mplusStd == "stdyx")
+  {
     Pars$std <- object$parameters$stdyx.standardized$est
+  } else if (!is.null(object$parameters$standardized))
+  {
+    Pars$std <- object$parameters$standardized$est
   }
   
-  
-    
   Pars$lhs[grepl(".BY$",parsUS$paramHeader)] <- gsub("\\.BY$","",parsUS$paramHeader[grepl(".BY$",parsUS$paramHeader)])
   Pars$edge[grepl(".BY$",parsUS$paramHeader)] <- "->"
     
@@ -153,10 +168,7 @@ semPlotModel.mplus.model <- function (object,mplusStd=c("std", "stdy", "stdxy"),
   Pars$lhs[grepl("Variances",parsUS$paramHeader)] <- Pars$rhs[grepl("Variances",parsUS$paramHeader)]
   Pars$edge[grepl("Variances",parsUS$paramHeader)] <- "<->"
   
-  Pars$edge[grepl("Means|Intercepts",parsUS$paramHeader)] <- "int"
-  
-  if (!is.null(object$parameters$standardized)) Pars$std <- object$parameters$standardized$est
-  
+  Pars$edge[grepl("Means|Intercepts",parsUS$paramHeader)] <- "int"  
   
   # Extract threshold model:
   Thresh <- Pars[grepl("Thresholds",parsUS$paramHeader),-(3:4)]
