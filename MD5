@@ -1,11 +1,11 @@
 ff547ababc85108875b8e8f94239d4dd *COPYING
-6c713ff4fab0124861fa5288cf1aa6a0 *DESCRIPTION
-d2155d739b9edf23acb03d29c0167560 *NAMESPACE
+6a37cd948d4328ea39f7648d4fc07da1 *DESCRIPTION
+ebd86fe28aedea3e2147d31f93f61586 *NAMESPACE
 a345e358fd661ef77d9b04fb4a1d497b *NEWS
 6331dde1ac9c8dbbe8e76c99bee595f2 *R/00classes.R
 579e8b2641f3e8a5178eba4a297314f1 *R/Imin.R
 8c3648e41405f1aa7f68faffe5ba2efa *R/IntInNode.r
-f00557c10fd736d2f515eec0b22c285f *R/OpenMx.R
+9248931db94f30f03d544b3deec71cbf *R/OpenMx.R
 5b72ddd986870bd8e073676db942234a *R/Pars2Matrix.R
 b92da836d47ecc0b7f2b48815e406c19 *R/amos.R
 a12d237e8ab65edc2757040b398eccb4 *R/cvregsemplot.R
@@ -34,7 +34,7 @@ c5a5eba09d49930b6e0160a7b9ec6925 *R/ramModel.R
 2f61fd62584bf9c98bba51b97d80d3f4 *R/semCors.R
 3b788e07050739e522904acf5c183363 *R/semMatrixAlgebra.R
 54a416fe9b76c32e914eb46bb9c1ffc8 *R/semPaths.R
-2f263f9f0d9b3323ad2cdac9132664e4 *R/semPathsHelperFuns.R
+e53810214871b94ff1e3947ed2f7a5e1 *R/semPathsHelperFuns.R
 492f9b0d221bdcc8601974802df5bbc1 *R/semSyntax.R
 685428c6eeee5aaca688f466d517c4f2 *R/semspec.R
 112965b5673b518e97a64895c31236cd *R/semstandmsem.R
@@ -48,7 +48,7 @@ dfd6670b4e9fc9fb2e63169fbcdf5783 *man/edits.Rd
 c55952e755b8121768815bb2634be5f1 *man/lisrelModel.Rd
 ac4887c32ddfead1ecf9d1bec73df9a8 *man/modelMatrices.Rd
 ee8008d40ba3d4c6391a4d44c8c95c56 *man/ramModel.Rd
-916a25b62e55877c4a1371a7185276bd *man/regsemplot.Rd
+7dd339ada8549e1e46b52bfab2d69326 *man/regsemplot.Rd
 5c6f88a5afd453c7a93137e70ecb8732 *man/semCors.Rd
 512a8e0140b61ad7ff8bf3bca8038d8e *man/semMatrixAlgebra.Rd
 7cebc5ca573b167c6bb6f26241e7f585 *man/semPaths.Rd

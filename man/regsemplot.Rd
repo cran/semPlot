@@ -37,26 +37,27 @@ Jason Nak <jasonnak@hotmail.com>
 
 \examples{
 
+\dontrun{
 ## Example of fitting and plotting a regsem model in semPaths
-# library(psych)
-#library(lavaan)
-#library(regsem)
+library(psych)
+library(lavaan)
+library(regsem)
 
 # use a subset of the BFI
-#bfi2 <- bfi[1:250,c(1:5,18,22)]
-#bfi2[,1] <- reverse.code(-1,bfi2[,1])
+bfi2 <- bfi[1:250,c(1:5,18,22)]
+bfi2[,1] <- reverse.code(-1,bfi2[,1])
 
 # specify a SEM model
-#mod <- "
-#f1 =~ NA*A1+A2+A3+A4+A5+O2+N3
-#f1~~1*f1
-#"
+mod <- "
+f1 =~ NA*A1+A2+A3+A4+A5+O2+N3
+f1~~1*f1
+"
 
 # fit the model
-#fit <- cfa(mod, bfi2)
-#out.reg <- regsem(fit, type="lasso", pars_pen=c(1:7))
+fit <- cfa(mod, bfi2)
+out.reg <- regsem(fit, type="lasso", pars_pen=c(1:7))
 
 # plot the model
-#semPaths(semPlotModel.regsemplot(object = out.reg))
-
+semPaths(semPlotModel.regsem(object = out.reg))
+}
 }
