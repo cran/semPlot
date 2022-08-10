@@ -1,7 +1,7 @@
 ff547ababc85108875b8e8f94239d4dd *COPYING
-6be720dafc3c27db54d9f81a13a955e4 *DESCRIPTION
+08ffa49d1511893a7b455a266788b23a *DESCRIPTION
 8942c2bc60a9663af02cff22f9e8f408 *NAMESPACE
-3be0df7fde7b13eef201dad416374303 *NEWS
+93877dd59e77aae9b118c2c69f14af30 *NEWS
 6331dde1ac9c8dbbe8e76c99bee595f2 *R/00classes.R
 579e8b2641f3e8a5178eba4a297314f1 *R/Imin.R
 8c3648e41405f1aa7f68faffe5ba2efa *R/IntInNode.r
@@ -46,12 +46,12 @@ fe8f33483833e151113dced7d32ca2ff *man/Imin.Rd
 6485f1332059c3deb3601786ff6cafb3 *man/cvregsemplot.Rd
 dfd6670b4e9fc9fb2e63169fbcdf5783 *man/edits.Rd
 c55952e755b8121768815bb2634be5f1 *man/lisrelModel.Rd
-bd297d67e82fb55f82b302ee6b358dea *man/modelMatrices.Rd
+a9dfaff292a6e6693ca18ce268ba01f5 *man/modelMatrices.Rd
 b4a411cba4249567f3b7fb710eafab0c *man/ramModel.Rd
 7dd339ada8549e1e46b52bfab2d69326 *man/regsemplot.Rd
 5c6f88a5afd453c7a93137e70ecb8732 *man/semCors.Rd
-09aa4795e7ff699dae2bb16776a69bdd *man/semMatrixAlgebra.Rd
-4b7e3ff180dd2a3326e03bb14af9e4cb *man/semPaths.Rd
+3fe5f857fe776f01606b6241376f81e0 *man/semMatrixAlgebra.Rd
+8250441336ec49046230eeb3b381ce73 *man/semPaths.Rd
 7fcdabc526259cdaa114ff3b2fb9f6aa *man/semPlot-package.Rd
 e5996043cd0f0d7f8bc03b8dd621c366 *man/semPlotModel-class.Rd
 c4fced0a3e226caed2d7422da3483664 *man/semPlotModel.Rd
